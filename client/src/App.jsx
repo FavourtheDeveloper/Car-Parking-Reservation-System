@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,13 +8,13 @@ import {
 import Login from "./components/Login";
 import AdminPanel from "./components/AdminPanel";
 import ParkingDashboard from "./components/ParkingDashboard";
+import Register from "./components/Register";
 
 function App() {
-  const [user, setUser] = useState({ _id: "abc123", username: "TestUser", role: "user" }); // Mock user state
+  const [user, setUser] = useState(null);
 
-  const mockLogin = () => {
-    // You can simulate role: 'admin' or 'user'
-    setUser({ username: "JohnDoe", _id: "123", role: "user" });
+  const handleLogin = (user) => {
+    setUser(user); // Set the logged-in user
   };
 
   const handleLogout = () => {
@@ -22,27 +22,40 @@ function App() {
   };
 
   return (
-  <Router>
-        <Routes>
-          <Route path="/dashboard" element={<ParkingDashboard user={user} />} />
-          <Route
-            path="/"
-            element={
-              <Login onLogin={mockLogin} />
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              user?.role === "admin" ? (
-                <AdminPanel />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
-          />
-        </Routes>
-      
+    <Router>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/"
+          element={
+            user ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <Login onLogin={handleLogin} />
+            )
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            user ? (
+              <ParkingDashboard user={user} />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            user?.role === "admin" ? (
+              <AdminPanel />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+      </Routes>
     </Router>
   );
 }
