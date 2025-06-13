@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "admin123"; // Ideally hashed or stored in env vars
+const dotenv = require("dotenv");
+
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD; // Ideally hashed or stored in env vars
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
