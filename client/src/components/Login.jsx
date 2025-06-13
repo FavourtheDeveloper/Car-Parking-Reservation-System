@@ -19,7 +19,7 @@ export default function Login({ onLogin }) {
       console.log(res.data);
 
       onLogin(res.data.user);
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       setError("Invalid username or password");
     }
